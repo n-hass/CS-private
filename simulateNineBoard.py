@@ -53,8 +53,8 @@ def validate(current):
 ## start of main ##
 
 #init
-graySum = 0
-graySumIndex = 0
+greySum = 0
+greySumIndex = 0
 whiteSum = 0
 base = [1,2,3,4,5,6,7,8,9]
 
@@ -105,21 +105,20 @@ for m in range(0,362880): #362880
     mainRecord.append([current])
 
     if valid:
-        newGraySum = current[2]+current[3]+current[4]+current[8]
+        newGreySum = current[2]+current[3]+current[4]+current[8]
 
-        if graySum < newGraySum:
-            graySum = newGraySum
+        if greySum < newGreySum:
+            greySum = newGreySum
             whiteSum = current[0]+current[1]+current[5]+current[6]+current[7]
-            graySumIndex = m
+            greySumIndex = m
     
     # re-init for next loop iteration
     current = []
     base = [1,2,3,4,5,6,7,8,9]
 
+win = mainRecord[greySumIndex][0]
+
 print("\nwinning table:")
-print(mainRecord[graySumIndex])
-print("Gray sum:")
-print(graySum)
-print("White sum:")
-print(whiteSum) 
-print("")
+
+print("",win[0],"  ",win[1],"  ", win[2],"\n",win[3],"  ",win[4],"  ", win[5],"\n",win[6],"  ",win[7],"  ", win[8],)
+print("Grey sum: ",greySum,"\nWhite sum: ",whiteSum)
