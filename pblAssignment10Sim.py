@@ -1,67 +1,77 @@
-import random
+import random # library for dice rolling
 
-rollCount = 0
-totalRolls = 0
+winCount = 0 # the number of winning games
+winRolls = 0 # the total number of rolls across all winning games
 
-winCount = 0
-winRolls = 0
-
-
-def roll():
+"""
+Simulates a roll of two dice and returns their sum
+"""
+def roll(): 
     rollSum = 0
-
     rollSum = rollSum + random.randint(1,6) # roll the first dice
-
     rollSum = rollSum + random.randint(1,6) # roll the second dice
 
     return rollSum
 
+
+"""
+Each run of this function is a simulation of 1 game.
+Keeps record of the number of rolls in a game and what each turn was.
+
+Implements logic matching the problem breif, 
+with unique rules on the first turn and for subsequent turns.
+
+##  When the game is a win:  ##
+Accesses variable 'winRolls' declared above this function 
+to add to the total sum of rolls in all winning games.
+returns true
+
+##  When the game is a loss: ##
+returns false
+"""
 def sim():
     global winRolls
     
-    thisTurn = []
+    thisGame = [] # the turns (dice roll sums) rollled in this game
 
-    n = 0
-    refNum = 0
+    n = 0 # keeps track of number of turns in this game
+    refNum = 0 # for tracking the reference number when game takes more than one turn
 
     while True:
-
-        thisTurn.append(roll()) # make the roll and store in array
+        thisGame.append(roll()) # make the roll and store in list
         
-        if n == 0:
-            if thisTurn[n] == 7 or thisTurn[n] == 11:
-                winRolls = winRolls + n + 1 # add the number of rolls it took to win this game
+        if n == 0: # if this is the first turn of the game
+            if thisGame[n] == 7 or thisGame[n] == 11: # you win if the sum of rolls is 7 or 11
+                winRolls = winRolls + 1 # add the number of rolls it took to win this game
                 return True
             
 
-            if thisTurn[n] == 2 or thisTurn[n] == 3 or thisTurn[n] == 12:
+            if thisGame[n] == 2 or thisGame[n] == 3 or thisGame[n] == 12: # you lose if sum is 2, 3 or 12
                 return False
             
 
-            refNum = thisTurn[n] # save the reference number
+            refNum = thisGame[n] # didn't win or lose yet, save the reference number for future turns in this game
         
 
-        if n > 0:
-            if thisTurn[n] == 7:
+        if n > 0: # if this is the second or greater turn of the game
+            if thisGame[n] == 7: # if you rolled a sum of 7, you lose
                 return False
             
-            if thisTurn[n] == refNum:
+            if thisGame[n] == refNum: # if you rolled your reference number, you win
                 winRolls = winRolls + n + 1 # add the number of rolls it took to win this game
                 return True
         
+        n = n+1 # increment the turn counter
 
-        n = n+1 # increment the local turn counter
-
-    
 
 # main loop for simulations
 simulatedRounds = 5000000
 for m in range(0,simulatedRounds):
-    if sim():
-        winCount = winCount + 1
+    if sim(): # run a simulation
+        winCount = winCount + 1 # if it was a win, increment the counter
     
-
+#############################################################################
 
 print("Number of simulations: ",simulatedRounds)
-print("probability of winning: ", (winCount / simulatedRounds) ) # 0.4929292929 - 244/495
-print("Avg number of rolls to win: ", (winRolls / winCount) )
+print("Probability of winning: ", (winCount / simulatedRounds) ) # logic: number of wins / number of games played in total. (Real val = 244/495)
+print("Avg number of rolls to win: ", (winRolls / winCount) ) # logic: total number of rolls from all winning games / number of winning games
